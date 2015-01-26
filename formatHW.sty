@@ -1,0 +1,261 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{formatHW}[2014/12/15 HW page and title format Package]
+
+\RequirePackage{fancyhdr}
+\RequirePackage{hyperref}
+\RequirePackage{extramarks}
+\RequirePackage{etoolbox}
+\RequirePackage{xparse}
+
+%%%%%%%%% Homework Envioronment Tools  %%%%%%%%%%%%%%%%%%%%%%
+% Problem header helps us know when we go to next page
+%    \newcommand{\enterProblemHeader}[1]{%
+%       \nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+%       \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+%
+%    \newcommand{\exitProblemHeader}[1]{%
+%       \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+%       \nobreak\extramarks{#1}{}\nobreak}%
+%
+%    % label problems
+%    \newlength{\labelLength}
+%    \newcommand{\labelAnswer}[2]
+%      {\settowidth{\labelLength}{#1}%
+%       \addtolength{\labelLength}{0.25in}%
+%       \changetext{}{-\labelLength}{}{}{}%
+%       \noindent\fbox{\begin{minipage}[c]{\columnwidth}#2\end{minipage}}%
+%       \marginpar{\fbox{#1}}%
+%
+%       % We put the blank space above in order to make sure this
+%       % \marginpar gets correctly placed.
+%       \changetext{}{+\labelLength}{}{}{}}%
+%
+%    % Start a problem with \homeworkProblemName
+%    \setcounter{secnumdepth}{0}
+%    \newcommand{\homeworkProblemName}{}%
+%    \newcounter{homeworkProblemCounter}%
+%    \newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]%
+%      {\stepcounter{homeworkProblemCounter}%
+%       \renewcommand{\homeworkProblemName}{#1}%
+%       \section{\homeworkProblemName}%
+%       \enterProblemHeader{\homeworkProblemName}}%
+%      {\exitProblemHeader{\homeworkProblemName}}%
+%
+%    % start an answer with \problemAnswer
+%    \newcommand{\problemAnswer}[1]
+%      {\noindent\fbox{\begin{minipage}[c]{\columnwidth}#1\end{minipage}}}%
+%
+%    \newcommand{\problemLAnswer}[1]
+%      {\labelAnswer{\homeworkProblemName}{#1}}
+%
+%    % start a section of the homework
+%    \newcommand{\homeworkSectionName}{}%
+%    \newlength{\homeworkSectionLabelLength}{}%
+%    \newenvironment{homeworkSection}[1]%
+%      {% We put this space here to make sure we're not connected to the above.
+%       % Otherwise the changetext can do funny things to the other margin
+%
+%       \renewcommand{\homeworkSectionName}{#1}%
+%       \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+%       \addtolength{\homeworkSectionLabelLength}{0.25in}%
+%       \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+%       \subsection{\homeworkSectionName}%
+%       \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+%      {\enterProblemHeader{\homeworkProblemName}%
+%
+%       % We put the blank space above in order to make sure this margin
+%       % change doesn't happen too soon (otherwise \sectionAnswer's can
+%       % get ugly about their \marginpar placement.
+%       \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+%
+%    \newcommand{\sectionAnswer}[1]
+%      {% We put this space here to make sure we're disconnected from the previous
+%       % passage
+%
+%       \noindent\fbox{\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+%       \enterProblemHeader{\homeworkProblemName}\exitProblemHeader{\homeworkProblemName}%
+%       \marginpar{\fbox{\homeworkSectionName}}%
+%
+%       % We put the blank space above in order to make sure this
+%       % \marginpar gets correctly placed.
+%       }%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+%%%%%%%%%% Project Specific Information %%%%%%%%%%%%%%%%%%%%%
+\newcommand{\SpecificFormattingValues}[8]{
+   %The semester of the current project
+   \def\Semester{#1} %i.e., Spring 2014
+
+   % ClassShort is the abbreviation of the project or course
+   % Group or course name (short) %i.e., MATH 544
+   \def\GroupShort{#2}   
+   \def\thistitle{#3}%
+   \def\thistitleShort{#4}%
+
+   % ClassLong is the full name of the project or course
+   % Group or course name (long) %i.e. Intro. to Stochastic Processes
+   \def\GroupLong{#5}
+
+   % MeetingTime is a meeting time associated with the course
+   % Group or class meeting time % i.e., MWF 1:10 - 2:00
+   \def\MeetingTime{#6} 
+
+   % The full name of the person leading the group
+   % Group leader or course instructor (long) %Dr. Alex Roitershtein
+   \def\GroupLeaderLong{#7}
+
+   % The last name of the person leading the group
+   % Group Leader or course instructor (short) % i.e., Roitershtein
+   \def\GroupLeaderShort{#8} 
+}
+
+% Instructions (due date, etc.)
+% i.e., Due Friday, September 19th at 1:00
+\newcommand{\SpecificAssignment}[4]{
+   \def\HWDueDate{#1}
+   \def\problemSet{#2}
+   \def\Assignment{#3}
+   \def\theseInstructions{#4}
+}
+
+%assignment information
+\newcommand{\HWnumber}[1]{
+   \def\HWnum{#1}
+}
+\newcommand{\HWinfo}[3]{
+   \SpecificAssignment{#1}{#2}{#3}{}
+}
+
+\newcommand{\SpecificAuthor}[3]{
+   \def\AuthorName{#1}
+   \def\AuthorNameShort{#2}
+   \def\AuthorContact{#3}
+}
+
+\SpecificAssignment{}{}{}{}
+
+\DeclareOption{research}{
+   \SpecificFormattingValues
+   {Fall 2014} %semester
+   {Research} %group short
+   {Meeting}  %this title
+   {\today}   %this title short
+   {Clustering on multiple variable types} %group long
+   {F 2:10 - 3:00} %meeting time
+   {Dr. Daniel J. Nordman and Dr. Stephen Vardeman} %group leader long
+   {Nordman/Vardeman} %group leader short
+}
+
+\DeclareOption{COMS511}{
+   \SpecificFormattingValues
+   {Fall 2014} %semester
+   {COM S 511} %group short
+   {Homework Assignment \HWnum}  %this title
+   {HW \HWnum}   %this title short
+   {COM S 511: DSN and Analysis of Algorithms} %group long
+   {TR 12:40 - 2:00} %meeting time
+   {Dr. Oliver Eulenstein}
+   {Eulenstein} %group leader short
+   %When proofs are required, try to make them both clear and rigorous. 
+   %Even when proofs are not required, you should justify your answers 
+   %and explain your work.
+}
+
+\DeclareOption{STAT602}{
+   \SpecificFormattingValues
+   {Spring 2015} %semester
+   {STAT 602} %group short
+   {Homework Assignment \HWnum}  %this title
+   {HW \HWnum}   %this title short
+   {STAT 602: Modern Multivariate Statistical Learning} %group long
+   {TR 12:40 - 2:00} %meeting time
+   {Dr. Stephen Vardeman}
+   {Vardeman} %group leader short
+}
+
+% Author Name
+\DeclareOption{imouzon}{
+   \SpecificAuthor{Ian Mouzon}{Mouzon}{imouzon [@iastate]}
+}
+
+\ExecuteOptions{research}
+
+\ExecuteOptions{imouzon}
+
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%% Page set up %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Note we need the following for the page header and foot:
+% \thistitle
+% \Semester
+% \GroupLong
+% \GroupShort
+% \MeetingTime
+% \GroupLeaderLong
+% \GroupLeaderShort
+% \AuthorName
+% \AuthorContact
+
+ \topmargin=-0.45in      %
+ \evensidemargin=0in     %
+ \oddsidemargin=0in      %
+ \textwidth=6.5in        %
+ \textheight=9.0in       %
+ \headsep=0.25in         %
+
+ % Setup the header and footer
+ \pagestyle{fancy}                                                       %
+ \lhead{\AuthorContact}                                              %
+ \lhead{\AuthorNameShort}                                                 %
+ \chead{\GroupShort\ (\GroupLeaderShort\ \Semester): \thistitleShort}  %
+ \rhead{\firstxmark}                                                     %
+ \lfoot{\lastxmark}                                                      %
+ \cfoot{}                                                                %
+ \rfoot{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+ \renewcommand\headrulewidth{0.4pt}                                      %
+ \renewcommand\footrulewidth{0.4pt}                                      %
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %\ifdefempty{\definition}{
+ %      Do this if definition is empty
+ %   }{
+ %      Do this if definition is NOT empty
+ %   }
+
+ \makeatletter
+ \newcommand{\titleheader}{
+    \thispagestyle{empty}%
+    \begin{center}%
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabular}{c}%
+       \Large{\GroupShort: \GroupLong}\\
+       \thistitle\\
+       \Semester, \GroupLeaderLong\\
+    \end{tabular}
+    \end{center}
+
+    \begin{center}
+    \renewcommand{\arraystretch}{1.5}
+       \begin{tabular*}{0.65\textwidth}{r@{:\hspace{.3cm}}l}
+    \hline
+    Name& \AuthorName\\
+    email& \AuthorContact  \\
+    \ifdefempty{\theseInstructions}{}{Instructions&  \theseInstructions \\}
+    \ifdefempty{\Assignment}{}{Assignment& \Assignment \\}
+    \ifdefempty{\HWDueDate}{}{Due Date&  \HWDueDate \\}
+    \hline
+    \end{tabular*}
+    \end{center}
+ }
+ \makeatother
+
+ \def\titleheaderX{\titleheader{}{}{}}
+
+\endinput

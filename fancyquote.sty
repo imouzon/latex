@@ -1,0 +1,194 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{fancyquote}[2014/12/15 Fancy TikZ Quotation Package]
+\RequirePackage{tikz}
+
+%%%%%%%%% Fancy Quotes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\tikzset{%
+  fancy quotes/.style={
+    text width=\fq@width pt,
+    align=justify,
+    inner sep=1em,
+    anchor=north west,
+    minimum width=\textwidth,
+  },
+  fancy quotes width/.initial={.8\textwidth},
+  fancy quotes marks/.style={
+    scale=8,
+    text=white,
+    inner sep=0pt,
+  },
+  fancy quotes opening/.style={
+    fancy quotes marks,
+  },
+  fancy quotes closing/.style={
+    fancy quotes marks,
+  },
+  fancy quotes background/.style={
+    show background rectangle,
+    inner frame xsep=0pt,
+    background rectangle/.style={
+      fill=gray!25,
+      rounded corners,
+    },
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% less fancy
+%   \begin{fquote}[Author][Book][date]
+%       Here is a good quote
+%   \end{fquote}
+%
+%           Whats up dogs!         ____________________________________
+%                                   -Lawler, Introduction to Stochastic 
+
+\definecolor{lessfancyquotemark}{gray}{.7}
+\makeatletter
+\def\fquote{%
+    \@ifnextchar[{\fquote@i}{\fquote@i[]}%]
+           }%
+\def\fquote@i[#1]{%
+    \def\tempa{#1}%
+    \@ifnextchar[{\fquote@ii}{\fquote@ii[]}%]
+                 }%
+\def\fquote@ii[#1]{%
+    \def\tempb{#1}%
+    \@ifnextchar[{\fquote@iii}{\fquote@iii[]}%]
+                      }%
+\def\fquote@iii[#1]{%
+    \def\tempc{#1}%
+    \vspace{1em}%
+    \noindent%
+    \begin{list}{}{%
+         \setlength{\leftmargin}{0.1\textwidth}%
+         \setlength{\rightmargin}{0.1\textwidth}%
+                  }%
+         \item[]%
+         \begin{picture}(0,0)%
+         %\put(-15,-5){\makebox(0,0){\scalebox{3}{\textcolor{lessfancyquotemark}{``}}}}%
+         \end{picture}%
+         \begingroup\itshape}%
+
+ \def\endfquote{%
+ \endgroup\par%
+ \makebox[0pt][l]{%
+ \hspace{0.8\textwidth}%
+ \begin{picture}(0,0)(0,0)%
+ %\put(15,15){\makebox(0,0){%
+ %\scalebox{2}{\color{lessfancyquotemark}''}}}%
+ \end{picture}}%
+ \ifx\tempa\empty%
+ \else%
+    \ifx\tempc\empty%
+       \hfill\rule{100pt}{0.5pt}\\\mbox{}\hfill- \tempa,\ \emph{\tempb}%
+   \else%
+       \hfill\rule{100pt}{0.5pt}\\\mbox{}\hfill- \tempa,\ \emph{\tempb},\ \tempc%
+   \fi\fi\par%
+   \vspace{0.5em}%
+ \end{list}%
+ }%
+ \makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   \begin{simplequote}[Author][Book][date]
+%       Here is a good quote
+%   \end{simplequote}
+%
+%       italicized text that wraps eventually
+%                                        -Author, Book (date)
+
+\makeatletter
+\def\simplequote{%
+    \@ifnextchar[{\simplequote@i}{\simplequote@i[]}%]
+           }%
+\def\simplequote@i[#1]{%
+    \def\tempa{#1}%
+    \@ifnextchar[{\simplequote@ii}{\simplequote@ii[]}%]
+                 }%
+\def\simplequote@ii[#1]{%
+    \def\tempb{#1}%
+    \@ifnextchar[{\simplequote@iii}{\simplequote@iii[]}%]
+                      }%
+\def\simplequote@iii[#1]{%
+    \def\tempc{#1}%
+    \vspace{0.5em}%
+    \noindent%
+    \begin{list}{}{%
+         \setlength{\leftmargin}{0.1\textwidth}%
+         \setlength{\rightmargin}{0.1\textwidth}%
+                  }%
+         \item[]%
+         \begingroup\itshape}%
+
+ \def\endsimplequote{%
+ \endgroup\par%
+ \makebox[0pt][l]{%
+ \hspace{0.8\textwidth}%
+ }%
+ \ifx\tempa\empty%
+ \else%
+    \ifx\tempc\empty%
+       \mbox{}\hfill- \tempa,\ \emph{\tempb}%
+   \else%
+       \mbox{}\hfill- \tempa,\ \emph{\tempb}\ (\tempc)%
+   \fi\fi\par%
+   \vspace{0.5em}%
+ \end{list}%
+ }%
+ \makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   \begin{stackquote}[Author][Book][date]
+%       Here is a good quote
+%   \end{stackquote}
+%
+%       italicized text that wraps eventually
+%                                        -Author, 
+%                                     Book (date)
+
+\makeatletter
+\def\stackquote{%
+    \@ifnextchar[{\stackquote@i}{\stackquote@i[]}%]
+           }%
+\def\stackquote@i[#1]{%
+    \def\tempa{#1}%
+    \@ifnextchar[{\stackquote@ii}{\stackquote@ii[]}%]
+                 }%
+\def\stackquote@ii[#1]{%
+    \def\tempb{#1}%
+    \@ifnextchar[{\stackquote@iii}{\stackquote@iii[]}%]
+                      }%
+\def\stackquote@iii[#1]{%
+    \def\tempc{#1}%
+    \vspace{0.5em}%
+    \noindent%
+    \begin{list}{}{%
+         \setlength{\leftmargin}{0.1\textwidth}%
+         \setlength{\rightmargin}{0.1\textwidth}%
+                  }%
+         \item[]%
+         \begingroup\itshape}%
+
+ \def\endstackquote{%
+ \endgroup\par%
+ \makebox[0pt][l]{%
+ \hspace{0.8\textwidth}%
+ }%
+ \ifx\tempa\empty%
+ \else%
+    \ifx\tempc\empty%
+       \mbox{}\hfill- \tempa, \\
+       \mbox{}\hfill \emph{\tempb}%
+   \else%
+       \mbox{}\hfill- \tempa, \\ 
+       \mbox{}\hfill \emph{\tempb}\ (\tempc)%
+   \fi\fi\par%
+   \vspace{0.5em}%
+ \end{list}%
+ }%
+ \makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\endinput

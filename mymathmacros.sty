@@ -1,0 +1,67 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{mymathmacros}[2014/12/15 STAT 640 Style Math Package]
+
+\RequirePackage{xcolor}  % needed for color definitions
+\RequirePackage{amsmath,amsfonts,amsthm,amssymb}
+\RequirePackage{mdframed}
+
+%%%%%%%% Define New Color Commands  %%%%%%%%%%%%%%%%%%%%%%%%%
+% \blue{} creates blue text
+\newcommand{\blue}[1]{{\color{blue} #1}}
+
+% \red{} create red text
+\newcommand{\red}[1]{{\color{red} #1}}
+
+% \red{} create red text
+\newcommand{\green}[1]{{\color{green} #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%% Create New Theorems  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% New theorems: 
+%     \newtheorem{name}{What gets printed in the box}[counter]
+% used by
+%     \begin{name}
+%     CONTENT GOES HERE
+%     \end{name}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{remark}{Remark}[section] 
+\newtheorem{definition}{Definition}[section]
+\newtheorem{defi}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{model}{Model}[section]
+\newtheorem{condi}{Condition}[section]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%% Framed Theorems %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{ftheo}
+  {\begin{mdframed}\begin{theorem}}
+  {\end{theorem}\end{mdframed}}
+
+\newenvironment{fdef}
+  {\begin{mdframed}\begin{definition}}
+  {\end{definition}\end{mdframed}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%% Mathematical Macros  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\psp}{\ensuremath{\left(\Omega,\mathcal{F},\mu\right)}}
+\newcommand{\Rpsp}{\ensuremath{\left(\mathbb{R},\mathcal{B}(\mathbb{R}),P\right)}}
+
+\newcommand{\degree}[1]{\ensuremath{\text{degree}(#1)}}
+
+\makeatletter
+\newcommand{\distas}[1]{\mathbin{\overset{#1}{\kern\z@\sim}}}%
+\newsavebox{\mybox}\newsavebox{\mysim}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\endinput
